@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: pong_db
+  username: <%= ENV['PONG_DATABASE_USERNAME'] %>
+  password: <%= ENV['PONG_DATABASE_PASSWORD'] %>
+  pool: 5
+
+development:
+  <<: *default
+  database: pong_development
+
+test:
+  <<: *default
+  database: pong_test
+
+production:
+  <<: *default
+  database: pong_production

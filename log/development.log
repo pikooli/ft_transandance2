@@ -1,0 +1,2398 @@
+  [1m[35m (1994.9ms)[0m  [1m[35mCREATE DATABASE "pong_development" ENCODING = 'unicode'[0m
+  [1m[35m (1679.9ms)[0m  [1m[35mCREATE DATABASE "pong_test" ENCODING = 'unicode'[0m
+  [1m[35m (60.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (18.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8408719759446393870)[0m
+  [1m[35m (3.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20200405142658)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (44.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "userid" character varying, "username" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mprimary::SchemaMigration Create (4.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200405142658"]]
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ChangeTextToUniqInUsers (20200406091617)
+  [1m[35m (1.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.9ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_userid" ON "users"  ("userid")[0m
+  [1m[35m (9.2ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_username" ON "users"  ("username")[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200406091617"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateGuilds (20200407173841)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (22.3ms)[0m  [1m[35mCREATE TABLE "guilds" ("id" bigserial primary key, "guildname" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (9.6ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_guilds_on_guildname" ON "guilds"  ("guildname")[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "guild_id" bigint[0m
+  [1m[35m (21.6ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_guild_id" ON "users"  ("guild_id")[0m
+  [1m[35m (24.5ms)[0m  [1m[35mALTER TABLE "users" ADD CONSTRAINT "fk_rails_ac8c1c5fd5"
+FOREIGN KEY ("guild_id")
+  REFERENCES "guilds" ("id")
+[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200407173841"]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateActiveStorageTables (20200410152143)
+  [1m[35m (2.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (28.2ms)[0m  [1m[35mCREATE TABLE "active_storage_blobs" ("id" bigserial primary key, "key" character varying NOT NULL, "filename" character varying NOT NULL, "content_type" character varying, "metadata" text, "byte_size" bigint NOT NULL, "checksum" character varying NOT NULL, "created_at" timestamp NOT NULL)[0m
+  [1m[35m (10.0ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_active_storage_blobs_on_key" ON "active_storage_blobs"  ("key")[0m
+  [1m[35m (30.1ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" bigserial primary key, "name" character varying NOT NULL, "record_type" character varying NOT NULL, "record_id" bigint NOT NULL, "blob_id" bigint NOT NULL, "created_at" timestamp NOT NULL, CONSTRAINT "fk_rails_c3b3935057"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCREATE  INDEX  "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments"  ("blob_id")[0m
+  [1m[35m (9.4ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_active_storage_attachments_uniqueness" ON "active_storage_attachments"  ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200410152143"]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddAttributesToUsers (20200411074349)
+  [1m[35m (1.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "status" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200411074349"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateFriendships (20200411164216)
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (16.7ms)[0m  [1m[35mCREATE TABLE "friendships" ("id" bigserial primary key, "user_id" integer, "friend_user_id" integer)[0m
+  [1m[35m (19.8ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_friendships_on_user_id_and_friend_user_id" ON "friendships"  ("user_id", "friend_user_id")[0m
+  [1m[35m (7.9ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_friendships_on_friend_user_id_and_user_id" ON "friendships"  ("friend_user_id", "user_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200411164216"]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddOtpToUsers (20200412082307)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "otp_secret" character varying[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200412082307"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to Add2FaToUsers (20200412111714)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "TFA?" boolean[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200412111714"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to ModifyUsers (20200419142729)
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "users" ADD "roomchat_id" bigint[0m
+  [1m[35m (10.9ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_roomchat_id" ON "users"  ("roomchat_id")[0m
+  [1m[35m (23.3ms)[0m  [1m[35mCREATE TABLE "roomchats" ("id" bigserial primary key, "roomname" character varying, "owner" character varying, "password" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (21.8ms)[0m  [1m[35mCREATE TABLE "banlists" ("id" bigserial primary key, "speudo" character varying, "roomchat_id" bigint, "timeban" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (9.7ms)[0m  [1m[35mCREATE  INDEX  "index_banlists_on_roomchat_id" ON "banlists"  ("roomchat_id")[0m
+  [1m[35m (19.6ms)[0m  [1m[35mCREATE TABLE "admins" ("id" bigserial primary key, "speudo" character varying, "roomchat_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (16.4ms)[0m  [1m[35mCREATE  INDEX  "index_admins_on_roomchat_id" ON "admins"  ("roomchat_id")[0m
+  [1m[35m (22.9ms)[0m  [1m[35mCREATE TABLE "mutes" ("id" bigserial primary key, "speudo" character varying, "user_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (6.9ms)[0m  [1m[35mCREATE  INDEX  "index_mutes_on_user_id" ON "mutes"  ("user_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200419142729"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddVictoriesLossesToUsers (20200420113304)
+  [1m[35m (1.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "victories" integer DEFAULT 0[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "losses" integer DEFAULT 0[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200420113304"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMatches (20200422120327)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (21.7ms)[0m  [1m[35mCREATE TABLE "matches" ("id" bigserial primary key, "playerLeft" character varying, "playerRight" character varying, "scoreLeft" integer, "scoreRight" integer, "matchType" character varying, "user_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_1766d8a780"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (9.4ms)[0m  [1m[35mCREATE  INDEX  "index_matches_on_user_id" ON "matches"  ("user_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200422120327"]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPointsToGuilds (20200423112930)
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "guilds" ADD "points" integer DEFAULT 0[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200423112930"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddAnagramToGuilds (20200423163024)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "guilds" ADD "anagram" character varying[0m
+  [1m[35m (11.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_guilds_on_anagram" ON "guilds"  ("anagram")[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200423163024"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddRankToUsers (20200423172029)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "rank" integer DEFAULT 0[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200423172029"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddToGuild (20200424133848)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "G_anagram" character varying[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "guilds" ADD "user_id" bigint[0m
+  [1m[35m (6.0ms)[0m  [1m[35mCREATE  INDEX  "index_guilds_on_user_id" ON "guilds"  ("user_id")[0m
+  [1m[35m (13.3ms)[0m  [1m[35mALTER TABLE "guilds" ADD CONSTRAINT "fk_rails_22da3b762b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[36mprimary::SchemaMigration Create (1.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200424133848"]]
+  [1m[35m (1.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddMatchToUsers (20200424164315)
+  [1m[35m (1.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "match" character varying DEFAULT 'none'[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200424164315"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddGuildOwnerOfficier (20200425102317)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "guilds" ADD "owner" character varying[0m
+  [1m[35m (16.8ms)[0m  [1m[35mCREATE TABLE "officers" ("id" bigserial primary key, "username" character varying, "guild_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_852bb25fce"
+FOREIGN KEY ("guild_id")
+  REFERENCES "guilds" ("id")
+)[0m
+  [1m[35m (5.1ms)[0m  [1m[35mCREATE  INDEX  "index_officers_on_guild_id" ON "officers"  ("guild_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200425102317"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddOfficiersRemoveOfficier (20200425113511)
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.2ms)[0m  [1m[35mDROP TABLE "officers"[0m
+  [1m[35m (17.2ms)[0m  [1m[35mCREATE TABLE "officers" ("id" bigserial primary key, "username" character varying, "guild_id" bigint, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_852bb25fce"
+FOREIGN KEY ("guild_id")
+  REFERENCES "guilds" ("id")
+)[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE  INDEX  "index_officers_on_guild_id" ON "officers"  ("guild_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200425113511"]]
+  [1m[35m (18.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateDeathmatches (20200425163919)
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (22.0ms)[0m  [1m[35mCREATE TABLE "deathmatches" ("id" bigserial primary key, "state" character varying, "begin" timestamp, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "deathmatch_id" bigint[0m
+  [1m[35m (6.7ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_deathmatch_id" ON "users"  ("deathmatch_id")[0m
+  [1m[35m (7.1ms)[0m  [1m[35mALTER TABLE "users" ADD CONSTRAINT "fk_rails_62e8999911"
+FOREIGN KEY ("deathmatch_id")
+  REFERENCES "deathmatches" ("id")
+[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200425163919"]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to RemoveOfficer (20200426085720)
+  [1m[35m (1.9ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "officer" boolean DEFAULT FALSE[0m
+  [1m[35m (2.3ms)[0m  [1m[35mDROP TABLE "officers"[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200426085720"]]
+  [1m[35m (17.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddToUsers (20200426095535)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "deathmatch" integer DEFAULT 0[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "admin" boolean DEFAULT FALSE[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200426095535"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateGuildwars (20200426163125)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (38.7ms)[0m  [1m[35mCREATE TABLE "guildwars" ("id" bigserial primary key, "guild_1_id" bigint, "guild_2_id" bigint, "guildname_1" character varying, "guildanagram_1" character varying, "guildname_2" character varying, "guildanagram_2" character varying, "pointbet" integer DEFAULT 0, "addon" boolean DEFAULT FALSE, "setunwanswered" integer DEFAULT 0, "guild_1_accept" boolean DEFAULT TRUE, "guild_2_accept" boolean DEFAULT FALSE, "finish" boolean DEFAULT FALSE, "point_1" integer DEFAULT 0, "point_2" integer DEFAULT 0, "wartime" boolean DEFAULT TRUE, "unanswered" integer DEFAULT 0, "start" timestamp, "end" timestamp, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_da1cd66813"
+FOREIGN KEY ("guild_1_id")
+  REFERENCES "guilds" ("id")
+, CONSTRAINT "fk_rails_b76f460a13"
+FOREIGN KEY ("guild_2_id")
+  REFERENCES "guilds" ("id")
+)[0m
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE  INDEX  "index_guildwars_on_guild_1_id" ON "guildwars"  ("guild_1_id")[0m
+  [1m[35m (7.6ms)[0m  [1m[35mCREATE  INDEX  "index_guildwars_on_guild_2_id" ON "guildwars"  ("guild_2_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200426163125"]]
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreatePongs (20200427114756)
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.3ms)[0m  [1m[35mCREATE TABLE "pongs" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "pong" bigint DEFAULT NULL[0m
+  [1m[36mprimary::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200427114756"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddBannedToUsers (20200428094109)
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "users" ADD "banned" boolean DEFAULT FALSE[0m
+  [1m[36mprimary::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200428094109"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DropPongs (20200428174228)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.4ms)[0m  [1m[35mDROP TABLE "pongs"[0m
+  [1m[36mprimary::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200428174228"]]
+  [1m[35m (7.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateWarmatches (20200428195553)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (17.6ms)[0m  [1m[35mCREATE TABLE "warmatches" ("id" bigserial primary key, "guildwar_id" bigint, "challenger" character varying, "guild_id" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_dbbf73dead"
+FOREIGN KEY ("guildwar_id")
+  REFERENCES "guildwars" ("id")
+)[0m
+  [1m[35m (6.7ms)[0m  [1m[35mCREATE  INDEX  "index_warmatches_on_guildwar_id" ON "warmatches"  ("guildwar_id")[0m
+  [1m[36mprimary::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20200428195553"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (3.6ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (2.9ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-06-28 08:38:03.035703"], ["updated_at", "2020-06-28 08:38:03.035703"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(8408719759446393870)[0m
+  [1m[35m (4.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for 172.21.0.1 at 2020-06-28 08:39:05 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[35m (5.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by RootController#new as HTML
+  Rendering root/new.html.erb within layouts/application
+  Rendered root/new.html.erb within layouts/application (Duration: 10.5ms | Allocations: 411)
+[Webpacker] Compiling...
+Started GET "/" for 172.21.0.1 at 2020-06-28 08:39:08 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RootController#new as HTML
+  Rendering root/new.html.erb within layouts/application
+  Rendered root/new.html.erb within layouts/application (Duration: 0.3ms | Allocations: 48)
+[Webpacker] Compiling...
+[Webpacker] Compiled all packs in /pong_rails/public/packs
+[Webpacker] Hash: bd05eccb5b636d0e8dff
+Version: webpack 4.42.1
+Time: 17378ms
+Built at: 06/28/2020 8:39:32 AM
+                                                  Asset       Size                    Chunks                         Chunk Names
+                 js/application-f26026cf1df92975bd37.js    524 KiB               application  [emitted] [immutable]  application
+             js/application-f26026cf1df92975bd37.js.map    523 KiB               application  [emitted] [dev]        application
+    js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js   1000 KiB  overlyComplicatedHogwash  [emitted] [immutable]  overlyComplicatedHogwash
+js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js.map   1020 KiB  overlyComplicatedHogwash  [emitted] [dev]        overlyComplicatedHogwash
+                                          manifest.json  794 bytes                            [emitted]              
+Entrypoint application = js/application-f26026cf1df92975bd37.js js/application-f26026cf1df92975bd37.js.map
+Entrypoint overlyComplicatedHogwash = js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js.map
+[./app/javascript/Guildwars/guildwars.js] 5.29 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/Useless/funscript.js] 776 bytes {overlyComplicatedHogwash} [built]
+[./app/javascript/channels/index.js] 211 bytes {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/chat.js] 1.34 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/deathmatch.js] 2.51 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/guild.js] 11 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/index.js] 184 bytes {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/pong.js] 2.59 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/search.js] 2.63 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/tournament.js] 3.6 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/user.js] 6.73 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/watch.js] 2.62 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/packs/application.js] 727 bytes {application} [built]
+[./app/javascript/packs/overlyComplicatedHogwash.js] 1.23 KiB {overlyComplicatedHogwash} [built]
+[./node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 905 bytes {overlyComplicatedHogwash} [built]
+    + 131 hidden modules
+
+[Webpacker] Compiled all packs in /pong_rails/public/packs
+[Webpacker] Hash: bd05eccb5b636d0e8dff
+Version: webpack 4.42.1
+Time: 16160ms
+Built at: 06/28/2020 8:39:32 AM
+                                                  Asset       Size                    Chunks                         Chunk Names
+                 js/application-f26026cf1df92975bd37.js    524 KiB               application  [emitted] [immutable]  application
+             js/application-f26026cf1df92975bd37.js.map    523 KiB               application  [emitted] [dev]        application
+    js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js   1000 KiB  overlyComplicatedHogwash  [emitted] [immutable]  overlyComplicatedHogwash
+js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js.map   1020 KiB  overlyComplicatedHogwash  [emitted] [dev]        overlyComplicatedHogwash
+                                          manifest.json  794 bytes                            [emitted]              
+Entrypoint application = js/application-f26026cf1df92975bd37.js js/application-f26026cf1df92975bd37.js.map
+Entrypoint overlyComplicatedHogwash = js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js js/overlyComplicatedHogwash-9c210765c9d3c571c1a5.js.map
+[./app/javascript/Guildwars/guildwars.js] 5.29 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/Useless/funscript.js] 776 bytes {overlyComplicatedHogwash} [built]
+[./app/javascript/channels/index.js] 211 bytes {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/chat.js] 1.34 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/deathmatch.js] 2.51 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/guild.js] 11 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/index.js] 184 bytes {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/pong.js] 2.59 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/search.js] 2.63 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/tournament.js] 3.6 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/user.js] 6.73 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/nav/watch.js] 2.62 KiB {overlyComplicatedHogwash} [built]
+[./app/javascript/packs/application.js] 727 bytes {application} [built]
+[./app/javascript/packs/overlyComplicatedHogwash.js] 1.23 KiB {overlyComplicatedHogwash} [built]
+[./node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 905 bytes {overlyComplicatedHogwash} [built]
+    + 131 hidden modules
+
+Completed 200 OK in 23918ms (Views: 23916.4ms | ActiveRecord: 0.0ms | Allocations: 7055)
+
+
+Completed 200 OK in 26844ms (Views: 26786.3ms | ActiveRecord: 0.0ms | Allocations: 56263)
+
+
+Started GET "/assets/application.debug-de74eb31425ebf78445487172adde8f8a6b4956c77f31e68c8532ec5d5b5392f.css" for 172.21.0.1 at 2020-06-28 08:39:32 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/" for 172.21.0.1 at 2020-06-28 08:39:39 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RootController#new as HTML
+  Rendering root/new.html.erb within layouts/application
+  Rendered root/new.html.erb within layouts/application (Duration: 0.8ms | Allocations: 47)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 264ms (Views: 262.5ms | ActiveRecord: 0.0ms | Allocations: 4444)
+
+
+Started GET "/assets/application.debug-de74eb31425ebf78445487172adde8f8a6b4956c77f31e68c8532ec5d5b5392f.css" for 172.21.0.1 at 2020-06-28 08:39:39 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/carl" for 172.21.0.1 at 2020-06-28 08:39:42 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RootController#carl as HTML
+Started GET "/carl" for 172.21.0.1 at 2020-06-28 08:39:42 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RootController#carl as HTML
+  [1m[36mUser Load (11.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "0"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:4:in `carl'
+  [1m[36mUser Load (12.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "0"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:4:in `carl'
+  [1m[35m (0.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  [1m[36mUser Exists? (4.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "0"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  [1m[36mUser Exists? (3.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "0"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  [1m[36mUser Exists? (4.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  [1m[36mUser Exists? (7.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  [1m[36mUser Create (15.9ms)[0m  [1m[32mINSERT INTO "users" ("userid", "username", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["userid", "0"], ["username", "carl"], ["created_at", "2020-06-28 08:39:42.530939"], ["updated_at", "2020-06-28 08:39:42.530939"]]
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  [1m[35m (2.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  [1m[36mUser Create (15.0ms)[0m  [1m[32mINSERT INTO "users" ("userid", "username", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["userid", "0"], ["username", "carl"], ["created_at", "2020-06-28 08:39:42.538048"], ["updated_at", "2020-06-28 08:39:42.538048"]]
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+  Rendering root/index.html.erb within layouts/application
+  [1m[35m (0.4ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/root_controller.rb:5:in `carl'
+Completed 500 Internal Server Error in 290ms (ActiveRecord: 72.1ms | Allocations: 33655)
+
+
+  
+ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_users_on_userid"
+DETAIL:  Key (userid)=(0) already exists.
+):
+  
+app/controllers/root_controller.rb:5:in `carl'
+  [1m[36mActiveStorage::Attachment Load (11.0ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = $1 AND "active_storage_attachments"."record_type" = $2 AND "active_storage_attachments"."name" = $3 LIMIT $4[0m  [["record_id", 1], ["record_type", "User"], ["name", "avatar"], ["LIMIT", 1]]
+  ↳ app/views/root/index.html.erb:33
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered root/index.html.erb within layouts/application (Duration: 909.4ms | Allocations: 789931)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 1211ms (Views: 972.3ms | ActiveRecord: 198.0ms | Allocations: 816552)
+
+
+Started GET "/cable" for 172.21.0.1 at 2020-06-28 08:39:43 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:39:43 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/application_cable/connection.rb:8:in `connect'
+Processing by UsersController#show as JSON
+  [1m[36mUser Load (8.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 38ms (Views: 0.8ms | ActiveRecord: 8.3ms | Allocations: 2005)
+
+
+  [1m[35m (2.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Exists? (21.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/assets/avatar-f335f79fc5b6f894361a1a9707c25dc35e8fbe5efc59c5b019f8c56d08f88c05.png" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Processing by UsersController#show as JSON
+  [1m[36mUser Exists? (12.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (7.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+  [1m[36mUser Update (6.3ms)[0m  [1m[33mUPDATE "users" SET "status" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["status", "online"], ["updated_at", "2020-06-28 08:39:44.152502"], ["id", 1]]
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Completed 200 OK in 14ms (Views: 0.6ms | ActiveRecord: 7.0ms | Allocations: 2188)
+
+
+  [1m[35m (3.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Processing by UsersController#index as JSON
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  Parameters: {"id"=>"matches"}
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Load (11.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+Processing by UsersController#show as JSON
+  [1m[36mUser Load (11.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (18.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 31ms (Views: 0.7ms | ActiveRecord: 18.7ms | Allocations: 2709)
+
+
+Started GET "/johnson" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RootController#johnson as HTML
+  [1m[36mUser Load (8.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "1"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:14:in `johnson'
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/root_controller.rb:15:in `johnson'
+  [1m[36mMatch Load (10.0ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+  [1m[36mUser Load (19.2ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 169ms (Views: 21.6ms | ActiveRecord: 64.2ms | Allocations: 18063)
+
+
+  [1m[36mUser Exists? (5.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "1"], ["LIMIT", 1]]
+Completed 200 OK in 163ms (Views: 6.1ms | ActiveRecord: 64.9ms | Allocations: 16771)
+
+
+  ↳ app/controllers/root_controller.rb:15:in `johnson'
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+  [1m[36mUser Exists? (5.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:15:in `johnson'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO "users" ("userid", "username", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["userid", "1"], ["username", "johnson"], ["created_at", "2020-06-28 08:39:44.404842"], ["updated_at", "2020-06-28 08:39:44.404842"]]
+  ↳ app/controllers/root_controller.rb:15:in `johnson'
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/root_controller.rb:15:in `johnson'
+  Rendering root/index.html.erb within layouts/application
+  [1m[36mActiveStorage::Attachment Load (4.7ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = $1 AND "active_storage_attachments"."record_type" = $2 AND "active_storage_attachments"."name" = $3 LIMIT $4[0m  [["record_id", 3], ["record_type", "User"], ["name", "avatar"], ["LIMIT", 1]]
+Processing by UsersController#index as JSON
+Processing by UsersController#index as JSON
+  ↳ app/views/root/index.html.erb:33
+  Parameters: {"id"=>"matches"}
+  Parameters: {"id"=>"friends"}
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (4.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mMatch Load (7.4ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 22ms (Views: 5.7ms | ActiveRecord: 11.1ms | Allocations: 3214)
+
+
+  [1m[36mUser Load (16.2ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 1]]
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Completed 200 OK in 34ms (Views: 6.8ms | ActiveRecord: 21.1ms | Allocations: 5753)
+
+
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (7.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  [1m[36mMatch Load (4.3ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+  [1m[36mUser Load (5.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+Completed 200 OK in 26ms (Views: 6.3ms | ActiveRecord: 11.8ms | Allocations: 3380)
+
+
+  [1m[36mUser Load (8.6ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 27ms (Views: 3.7ms | ActiveRecord: 13.8ms | Allocations: 3057)
+
+
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered root/index.html.erb within layouts/application (Duration: 236.8ms | Allocations: 21106)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 484ms (Views: 422.6ms | ActiveRecord: 26.2ms | Allocations: 35858)
+
+
+Started GET "/cable" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Load (5.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/application_cable/connection.rb:8:in `connect'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Processing by UsersController#show as JSON
+  [1m[36mUser Exists? (4.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 8ms (Views: 0.7ms | ActiveRecord: 3.7ms | Allocations: 1932)
+
+
+  [1m[36mUser Exists? (4.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:39:44 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Update (15.0ms)[0m  [1m[33mUPDATE "users" SET "status" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["status", "online"], ["updated_at", "2020-06-28 08:39:44.992464"], ["id", 3]]
+Started GET "/assets/avatar-f335f79fc5b6f894361a1a9707c25dc35e8fbe5efc59c5b019f8c56d08f88c05.png" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+  [1m[35m (4.1ms)[0m  [1m[35mCOMMIT[0m
+Processing by UsersController#show as JSON
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Load (7.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (4.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 18ms (Views: 0.5ms | ActiveRecord: 7.3ms | Allocations: 3382)
+
+
+  [1m[36mMatch Load (5.5ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 26ms (Views: 7.2ms | ActiveRecord: 9.9ms | Allocations: 4795)
+
+
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Load (5.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+Processing by UsersController#show as JSON
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (8.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+  [1m[36mUser Load (19.3ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 39ms (Views: 5.2ms | ActiveRecord: 25.0ms | Allocations: 6659)
+
+
+  [1m[36mUser Load (6.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+Completed 200 OK in 20ms (Views: 0.4ms | ActiveRecord: 8.7ms | Allocations: 2946)
+
+
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+  [1m[36mMatch Load (6.6ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 27ms (Views: 6.7ms | ActiveRecord: 13.4ms | Allocations: 5179)
+
+
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (4.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (4.8ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 15ms (Views: 3.0ms | ActiveRecord: 7.5ms | Allocations: 2926)
+
+
+  [1m[36mMatch Load (3.1ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 20ms (Views: 6.1ms | ActiveRecord: 7.6ms | Allocations: 4275)
+
+
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:39:45 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (6.5ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 13ms (Views: 2.3ms | ActiveRecord: 7.1ms | Allocations: 1924)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:17 +0000
+Started GET "/personal/muted?speudo=carl" for 172.21.0.1 at 2020-06-28 08:40:17 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#index as JSON
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"carl"}
+  [1m[36mUser Load (8.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mRoomchat Load (5.2ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 44ms (Views: 12.1ms | ActiveRecord: 15.4ms | Allocations: 5546)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:17 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mMute Load (6.8ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 67ms (Views: 0.1ms | ActiveRecord: 24.2ms | Allocations: 9374)
+
+
+Processing by RoomchatController#index as JSON
+Started GET "/personal/muted?speudo=carl" for 172.21.0.1 at 2020-06-28 08:40:17 +0000
+  [1m[36mRoomchat Load (2.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 10ms (Views: 6.0ms | ActiveRecord: 2.5ms | Allocations: 2279)
+
+
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"carl"}
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mMute Load (4.1ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 14ms (Views: 0.1ms | ActiveRecord: 6.6ms | Allocations: 1962)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:20 +0000
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:40:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by PersonnalController#muted as */*
+Processing by RoomchatController#index as JSON
+  Parameters: {"speudo"=>"johnson"}
+  [1m[36mRoomchat Load (8.3ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  [1m[36mUser Load (6.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 16ms (Views: 6.2ms | ActiveRecord: 8.3ms | Allocations: 2118)
+
+
+  [1m[36mMute Load (3.3ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 20ms (Views: 0.1ms | ActiveRecord: 9.4ms | Allocations: 3038)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:40:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#index as JSON
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"johnson"}
+  [1m[36mRoomchat Load (2.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 6ms (Views: 3.2ms | ActiveRecord: 2.4ms | Allocations: 1417)
+
+
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mMute Load (1.9ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 18ms (Views: 0.1ms | ActiveRecord: 5.3ms | Allocations: 2988)
+
+
+Started POST "/chatroom/create" for 172.21.0.1 at 2020-06-28 08:40:29 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#create as */*
+  Parameters: {"speudo"=>"johnson", "password"=>"[FILTERED]", "roomname"=>"funRoom", "authenticity_token"=>"UchESpLzH6IIGXYz+dQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J/LBGgRiwQaw5mDCuQBOco8bU0fJ9nj+w=="}
+  [1m[36mRoomchat Load (1.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:12:in `create'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/roomchat_controller.rb:20:in `create'
+  [1m[36mRoomchat Create (4.3ms)[0m  [1m[32mINSERT INTO "roomchats" ("roomname", "owner", "password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["roomname", "funRoom"], ["owner", "johnson"], ["password", "42"], ["created_at", "2020-06-28 08:40:29.370292"], ["updated_at", "2020-06-28 08:40:29.370292"]]
+  ↳ app/controllers/roomchat_controller.rb:20:in `create'
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/roomchat_controller.rb:20:in `create'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/roomchat_controller.rb:21:in `create'
+  [1m[36mAdmin Create (8.3ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "johnson"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:40:29.419942"], ["updated_at", "2020-06-28 08:40:29.419942"]]
+  ↳ app/controllers/roomchat_controller.rb:21:in `create'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/roomchat_controller.rb:21:in `create'
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:29 +0000
+No template found for RoomchatController#create, rendering head :no_content
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:29 +0000
+Completed 204 No Content in 98ms (ActiveRecord: 36.8ms | Allocations: 16382)
+
+
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#index as JSON
+Processing by RoomchatController#index as JSON
+  [1m[36mRoomchat Load (3.1ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  [1m[36mRoomchat Load (1.8ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 7ms (Views: 3.3ms | ActiveRecord: 3.1ms | Allocations: 1526)
+
+
+Completed 200 OK in 8ms (Views: 5.5ms | ActiveRecord: 1.8ms | Allocations: 2022)
+
+
+Started GET "/roomchat/join?roomname=funRoom&speudo=carl&password=&authenticity_token=xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O%2Fxm2SdTRTpnvVQ%3D%3D" for 172.21.0.1 at 2020-06-28 08:40:33 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "password"=>"[FILTERED]", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (1.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (5.7ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (2.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 39ms (Views: 0.2ms | ActiveRecord: 15.9ms | Allocations: 3783)
+
+
+  [1m[36mRoomchat Load (1.3ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (2.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (3.1ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:40:33.096484"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started GET "/roomchat/join?roomname=funRoom&speudo=johnson&password=&authenticity_token=UchESpLzH6IIGXYz%2BdQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J%2FLBGgRiwQaw5mDCuQBOco8bU0fJ9nj%2Bw%3D%3D" for 172.21.0.1 at 2020-06-28 08:40:35 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"johnson", "password"=>"[FILTERED]", "authenticity_token"=>"UchESpLzH6IIGXYz+dQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J/LBGgRiwQaw5mDCuQBOco8bU0fJ9nj+w=="}
+  [1m[36mRoomchat Load (2.2ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (2.6ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (3.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 18ms (Views: 0.2ms | ActiveRecord: 8.7ms | Allocations: 2475)
+
+
+  [1m[36mRoomchat Load (2.1ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (3.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (3.5ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:40:35.253509"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (7.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:40:38 +0000
+  [1m[36mUser Exists? (9.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (4.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (4.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+Processing by UsersController#show as JSON
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mUser Update (7.3ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:40:38.941970"], ["id", 3]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 8ms (Views: 0.5ms | ActiveRecord: 0.6ms | Allocations: 1888)
+
+
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (8.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:40:38 +0000
+  [1m[35m (9.6ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:40:38 +0000
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:40:38 +0000
+  [1m[36mUser Update (4.6ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:40:38.967977"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mRoomchat Load (2.8ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  [1m[36mRoomchat Load (1.7ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+Processing by UsersController#show as JSON
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (6.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[36mUser Load (4.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (12.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[35m (1.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mUser Load (10.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 25ms (Views: 0.4ms | ActiveRecord: 4.7ms | Allocations: 5517)
+
+
+  [1m[36mUser Load (7.4ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 47ms (Views: 19.5ms | ActiveRecord: 8.6ms | Allocations: 10293)
+
+
+  [1m[36mMatch Load (8.1ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+  [1m[36mRoomchat Update (3.0ms)[0m  [1m[33mUPDATE "roomchats" SET "owner" = $1, "updated_at" = $2 WHERE "roomchats"."id" = $3[0m  [["owner", "carl"], ["updated_at", "2020-06-28 08:40:39.024328"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:40:39 +0000
+Completed 200 OK in 51ms (Views: 16.3ms | ActiveRecord: 22.8ms | Allocations: 11547)
+
+
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[35m (2.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:40:39 +0000
+  [1m[35m (1.7ms)[0m  [1m[35mBEGIN[0m
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  [1m[36mAdmin Create (3.7ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "carl"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:40:39.070807"], ["updated_at", "2020-06-28 08:40:39.070807"]]
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mUser Load (7.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  ↳ app/controllers/users_controller.rb:54:in `index'
+Processing by UsersController#index as JSON
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (13.2ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+  [1m[36mMatch Load (4.9ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+Completed 200 OK in 40ms (Views: 4.4ms | ActiveRecord: 20.7ms | Allocations: 7046)
+
+
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 17ms (Views: 6.9ms | ActiveRecord: 5.6ms | Allocations: 2817)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:42 +0000
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:40:42 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"johnson"}
+Processing by RoomchatController#index as JSON
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mRoomchat Load (8.2ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  [1m[36mMute Load (5.9ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+Completed 200 OK in 12ms (Views: 2.9ms | ActiveRecord: 8.2ms | Allocations: 1844)
+
+
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 18ms (Views: 0.1ms | ActiveRecord: 9.4ms | Allocations: 3442)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:40:42 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:40:42 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#index as JSON
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"johnson"}
+  [1m[36mRoomchat Load (4.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 10ms (Views: 4.0ms | ActiveRecord: 4.4ms | Allocations: 1781)
+
+
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mMute Load (5.3ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 19ms (Views: 0.1ms | ActiveRecord: 8.7ms | Allocations: 3116)
+
+
+Started GET "/roomchat/join?roomname=funRoom&speudo=johnson&password=&authenticity_token=UchESpLzH6IIGXYz%2BdQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J%2FLBGgRiwQaw5mDCuQBOco8bU0fJ9nj%2Bw%3D%3D" for 172.21.0.1 at 2020-06-28 08:40:43 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"johnson", "password"=>"[FILTERED]", "authenticity_token"=>"UchESpLzH6IIGXYz+dQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J/LBGgRiwQaw5mDCuQBOco8bU0fJ9nj+w=="}
+  [1m[36mRoomchat Load (2.3ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (6.3ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (4.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 23ms (Views: 0.3ms | ActiveRecord: 12.8ms | Allocations: 2482)
+
+
+  [1m[36mRoomchat Load (1.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (3.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (3.5ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:40:43.951227"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started POST "/message/chatroom" for 172.21.0.1 at 2020-06-28 08:41:23 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by MessageController#chatroom as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "anagram"=>"", "content"=>"salut", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (2.8ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/message_controller.rb:3:in `chatroom'
+  [1m[36mBanlist Load (2.5ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/message_controller.rb:7:in `chatroom'
+No template found for MessageController#chatroom, rendering head :no_content
+Completed 204 No Content in 20ms (ActiveRecord: 5.3ms | Allocations: 3775)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:42:14 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/personal/muted?speudo=carl" for 172.21.0.1 at 2020-06-28 08:42:14 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Load (9.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (5.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+Processing by RoomchatController#index as JSON
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"carl"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mRoomchat Load (3.1ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 12ms (Views: 7.6ms | ActiveRecord: 3.1ms | Allocations: 2484)
+
+
+  [1m[36mMute Load (1.9ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 15ms (Views: 0.1ms | ActiveRecord: 2.5ms | Allocations: 3341)
+
+
+  [1m[36mUser Exists? (5.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Update (2.9ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:42:14.291606"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mRoomchat Load (1.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mRoomchat Update (1.6ms)[0m  [1m[33mUPDATE "roomchats" SET "owner" = $1, "updated_at" = $2 WHERE "roomchats"."id" = $3[0m  [["owner", "johnson"], ["updated_at", "2020-06-28 08:42:14.310395"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mAdmin Create (3.1ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "johnson"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:42:14.319702"], ["updated_at", "2020-06-28 08:42:14.319702"]]
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started GET "/roomchat/join?roomname=funRoom&speudo=carl&password=&authenticity_token=xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O%2Fxm2SdTRTpnvVQ%3D%3D" for 172.21.0.1 at 2020-06-28 08:42:15 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "password"=>"[FILTERED]", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (2.1ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (3.1ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (3.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 18ms (Views: 0.2ms | ActiveRecord: 8.8ms | Allocations: 2511)
+
+
+  [1m[36mRoomchat Load (1.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (3.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (2.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (2.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (3.5ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:42:15.634395"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+  [1m[36mUser Load (3.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:42:18 +0000
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:42:18 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Processing by PersonnalController#muted as */*
+  [1m[36mUser Exists? (7.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+Processing by RoomchatController#index as JSON
+  Parameters: {"speudo"=>"johnson"}
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  [1m[36mRoomchat Load (3.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  [1m[36mUser Exists? (5.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mMute Load (2.7ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 15ms (Views: 0.1ms | ActiveRecord: 3.8ms | Allocations: 3953)
+
+
+Completed 200 OK in 11ms (Views: 6.3ms | ActiveRecord: 3.4ms | Allocations: 2447)
+
+
+  [1m[36mUser Update (3.5ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:42:18.071332"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mRoomchat Load (0.7ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mRoomchat Update (1.1ms)[0m  [1m[33mUPDATE "roomchats" SET "owner" = $1, "updated_at" = $2 WHERE "roomchats"."id" = $3[0m  [["owner", "carl"], ["updated_at", "2020-06-28 08:42:18.093276"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mAdmin Create (0.4ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "carl"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:42:18.102718"], ["updated_at", "2020-06-28 08:42:18.102718"]]
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started GET "/roomchat/join?roomname=funRoom&speudo=johnson&password=&authenticity_token=UchESpLzH6IIGXYz%2BdQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J%2FLBGgRiwQaw5mDCuQBOco8bU0fJ9nj%2Bw%3D%3D" for 172.21.0.1 at 2020-06-28 08:42:18 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"johnson", "password"=>"[FILTERED]", "authenticity_token"=>"UchESpLzH6IIGXYz+dQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J/LBGgRiwQaw5mDCuQBOco8bU0fJ9nj+w=="}
+  [1m[36mRoomchat Load (0.9ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (3.0ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 13ms (Views: 0.2ms | ActiveRecord: 4.3ms | Allocations: 2471)
+
+
+  [1m[36mRoomchat Load (0.8ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (2.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (3.0ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:42:18.991331"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started POST "/message/chatroom" for 172.21.0.1 at 2020-06-28 08:42:42 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by MessageController#chatroom as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "anagram"=>"", "content"=>"hello , how are you doing ?", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (1.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/message_controller.rb:3:in `chatroom'
+  [1m[36mBanlist Load (2.4ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/message_controller.rb:7:in `chatroom'
+No template found for MessageController#chatroom, rendering head :no_content
+Completed 204 No Content in 14ms (ActiveRecord: 3.8ms | Allocations: 2143)
+
+
+Started POST "/message/chatroom" for 172.21.0.1 at 2020-06-28 08:42:47 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by MessageController#chatroom as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"johnson", "anagram"=>"", "content"=>"fine and you ?", "authenticity_token"=>"UchESpLzH6IIGXYz+dQPIXYKj96jKuggCBlsiuWFdPn5lt4HXay72J/LBGgRiwQaw5mDCuQBOco8bU0fJ9nj+w=="}
+  [1m[36mRoomchat Load (1.7ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/message_controller.rb:3:in `chatroom'
+  [1m[36mBanlist Load (2.1ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/message_controller.rb:7:in `chatroom'
+No template found for MessageController#chatroom, rendering head :no_content
+Completed 204 No Content in 14ms (ActiveRecord: 3.8ms | Allocations: 2140)
+
+
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (2.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (13.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:42:53 +0000
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Exists? (7.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Exists? (5.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (4.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Update (7.5ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:42:53.858807"], ["id", 1]]
+Processing by UsersController#index as JSON
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  Parameters: {"id"=>"players"}
+  [1m[35m (3.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Update (11.7ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:42:53.869424"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (5.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mRoomchat Load (1.9ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (4.8ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "0"], ["status", "in a match with 0"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 22ms (Views: 5.1ms | ActiveRecord: 10.6ms | Allocations: 3774)
+
+
+  [1m[36mUser Load (6.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:42:53 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mRoomchat Update (1.7ms)[0m  [1m[33mUPDATE "roomchats" SET "owner" = $1, "updated_at" = $2 WHERE "roomchats"."id" = $3[0m  [["owner", "johnson"], ["updated_at", "2020-06-28 08:42:53.908662"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mRoomchat Load (3.3ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[35m (1.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mUser Load (5.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+Processing by UsersController#index as JSON
+  [1m[35m (1.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  Parameters: {"id"=>"players"}
+  [1m[36mAdmin Create (2.1ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "johnson"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:42:53.931211"], ["updated_at", "2020-06-28 08:42:53.931211"]]
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[36mUser Load (4.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mRoomchat Update (2.4ms)[0m  [1m[33mUPDATE "roomchats" SET "owner" = $1, "updated_at" = $2 WHERE "roomchats"."id" = $3[0m  [["owner", "johnson"], ["updated_at", "2020-06-28 08:42:53.946632"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mUser Load (5.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Load (8.0ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "0"], ["status", "in a match with 0"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 31ms (Views: 6.8ms | ActiveRecord: 12.6ms | Allocations: 7295)
+
+
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mAdmin Create (0.6ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "johnson"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:42:53.973274"], ["updated_at", "2020-06-28 08:42:53.973274"]]
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mUser Load (2.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:43:00 +0000
+Started GET "/personal/muted?speudo=carl" for 172.21.0.1 at 2020-06-28 08:43:00 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"carl"}
+Processing by RoomchatController#index as JSON
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mRoomchat Load (2.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 11ms (Views: 7.1ms | ActiveRecord: 2.4ms | Allocations: 1836)
+
+
+  [1m[36mMute Load (5.7ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 20ms (Views: 0.3ms | ActiveRecord: 6.4ms | Allocations: 3492)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:43:00 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/personal/muted?speudo=carl" for 172.21.0.1 at 2020-06-28 08:43:00 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#index as JSON
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"carl"}
+  [1m[36mRoomchat Load (2.8ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 7ms (Views: 3.2ms | ActiveRecord: 2.8ms | Allocations: 1589)
+
+
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mMute Load (2.6ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 14ms (Views: 0.1ms | ActiveRecord: 6.1ms | Allocations: 3135)
+
+
+Started GET "/roomchat/join?roomname=funRoom&speudo=carl&password=&authenticity_token=xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O%2Fxm2SdTRTpnvVQ%3D%3D" for 172.21.0.1 at 2020-06-28 08:43:01 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "password"=>"[FILTERED]", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (1.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (4.6ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (2.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 19ms (Views: 0.2ms | ActiveRecord: 9.0ms | Allocations: 2519)
+
+
+  [1m[36mRoomchat Load (1.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (4.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (2.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (2.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (2.7ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:43:01.102706"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started GET "/johnson" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RootController#johnson as HTML
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "1"], ["LIMIT", 1]]
+  ↳ app/controllers/root_controller.rb:14:in `johnson'
+  Rendering root/index.html.erb within layouts/application
+  [1m[36mActiveStorage::Attachment Load (7.2ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = $1 AND "active_storage_attachments"."record_type" = $2 AND "active_storage_attachments"."name" = $3 LIMIT $4[0m  [["record_id", 3], ["record_type", "User"], ["name", "avatar"], ["LIMIT", 1]]
+  ↳ app/views/root/index.html.erb:33
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered root/index.html.erb within layouts/application (Duration: 199.0ms | Allocations: 4790)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 388ms (Views: 374.1ms | ActiveRecord: 10.5ms | Allocations: 9673)
+
+
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Exists? (5.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Exists? (4.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Update (4.1ms)[0m  [1m[33mUPDATE "users" SET "status" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["status", "offline"], ["updated_at", "2020-06-28 08:43:03.606873"], ["id", 3]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Load (7.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (4.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (6.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Update (6.6ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:43:03.653200"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Started GET "/cable" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+  [1m[35m (1.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mRoomchat Load (3.8ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+Processing by UsersController#show as JSON
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/application_cable/connection.rb:8:in `connect'
+  ↳ app/controllers/users_controller.rb:100:in `show'
+  [1m[36mRoomchat Update (2.7ms)[0m  [1m[33mUPDATE "roomchats" SET "owner" = $1, "updated_at" = $2 WHERE "roomchats"."id" = $3[0m  [["owner", "carl"], ["updated_at", "2020-06-28 08:43:03.693131"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+Completed 200 OK in 9ms (Views: 0.4ms | ActiveRecord: 0.5ms | Allocations: 2470)
+
+
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+  [1m[35m (1.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+  [1m[36mUser Exists? (11.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+  [1m[36mAdmin Create (5.4ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "carl"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:43:03.717979"], ["updated_at", "2020-06-28 08:43:03.717979"]]
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+  [1m[36mUser Exists? (10.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+Processing by UsersController#index as JSON
+  [1m[36mUser Update (8.3ms)[0m  [1m[33mUPDATE "users" SET "status" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["status", "online"], ["updated_at", "2020-06-28 08:43:03.756782"], ["id", 3]]
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (11.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+  Parameters: {"id"=>"friends"}
+Processing by UsersController#index as JSON
+Processing by UsersController#show as JSON
+  [1m[35m (1.3ms)[0m  [1m[35mCOMMIT[0m
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (6.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (6.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 15ms (Views: 0.6ms | ActiveRecord: 6.6ms | Allocations: 3376)
+
+
+  ↳ app/channels/status_channel.rb:4:in `subscribed'
+  [1m[36mMatch Load (4.0ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 18ms (Views: 5.9ms | ActiveRecord: 5.0ms | Allocations: 3937)
+
+
+  [1m[36mUser Load (21.9ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 45ms (Views: 11.4ms | ActiveRecord: 28.6ms | Allocations: 8364)
+
+
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#show as JSON
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mUser Load (4.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 12ms (Views: 0.7ms | ActiveRecord: 4.0ms | Allocations: 3084)
+
+
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  [1m[36mMatch Load (3.8ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 22ms (Views: 12.0ms | ActiveRecord: 4.3ms | Allocations: 5353)
+
+
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+  [1m[36mUser Load (8.0ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 20ms (Views: 5.6ms | ActiveRecord: 8.4ms | Allocations: 4165)
+
+
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:43:03 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  [1m[36mMatch Load (2.7ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 3]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 15ms (Views: 5.7ms | ActiveRecord: 3.2ms | Allocations: 4211)
+
+
+  [1m[36mUser Load (7.2ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 15ms (Views: 2.6ms | ActiveRecord: 7.7ms | Allocations: 3015)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:43:04 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:43:04 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#index as JSON
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"johnson"}
+  [1m[36mRoomchat Load (2.7ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+Completed 200 OK in 7ms (Views: 3.2ms | ActiveRecord: 2.7ms | Allocations: 1597)
+
+
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:43:04 +0000
+  [1m[36mMute Load (2.7ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 18ms (Views: 0.2ms | ActiveRecord: 3.3ms | Allocations: 4331)
+
+
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:43:04 +0000
+Processing by RoomchatController#index as JSON
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mRoomchat Load (1.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 5ms (Views: 2.5ms | ActiveRecord: 1.5ms | Allocations: 1154)
+
+
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"johnson"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mMute Load (0.7ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 1.1ms | Allocations: 1940)
+
+
+Started GET "/roomchat/join?roomname=funRoom&speudo=johnson&password=&authenticity_token=%2B8wbOQL2bqhswcyQvElZNVBQqNiP1gdtfRyFyXapDFBTkoF0zanK0vsTvstUFlIO5cOkDMj91odJaKRctPWbUg%3D%3D" for 172.21.0.1 at 2020-06-28 08:43:05 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"johnson", "password"=>"[FILTERED]", "authenticity_token"=>"+8wbOQL2bqhswcyQvElZNVBQqNiP1gdtfRyFyXapDFBTkoF0zanK0vsTvstUFlIO5cOkDMj91odJaKRctPWbUg=="}
+  [1m[36mRoomchat Load (1.0ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (2.3ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 13ms (Views: 0.2ms | ActiveRecord: 3.8ms | Allocations: 2470)
+
+
+  [1m[36mRoomchat Load (1.0ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (2.9ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:43:05.882889"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (2.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started POST "/message/chatroom" for 172.21.0.1 at 2020-06-28 08:43:32 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by MessageController#chatroom as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "anagram"=>"", "content"=>"hello how are you doing ?", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (1.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/message_controller.rb:3:in `chatroom'
+  [1m[36mBanlist Load (3.4ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/message_controller.rb:7:in `chatroom'
+No template found for MessageController#chatroom, rendering head :no_content
+Completed 204 No Content in 17ms (ActiveRecord: 4.8ms | Allocations: 1912)
+
+
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+Started GET "/personal/muted?speudo=johnson" for 172.21.0.1 at 2020-06-28 08:43:44 +0000
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:43:44 +0000
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (5.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Processing by RoomchatController#index as JSON
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"johnson"}
+  [1m[36mUser Exists? (7.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mRoomchat Load (3.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 11ms (Views: 6.4ms | ActiveRecord: 3.4ms | Allocations: 2576)
+
+
+  [1m[36mUser Update (5.8ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:43:44.687251"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (9.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mRoomchat Load (2.4ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[36mMute Load (7.2ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mUser Load (4.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Completed 200 OK in 32ms (Views: 0.1ms | ActiveRecord: 16.7ms | Allocations: 6003)
+
+
+Started GET "/roomchat/join?roomname=funRoom&speudo=johnson&password=&authenticity_token=%2B8wbOQL2bqhswcyQvElZNVBQqNiP1gdtfRyFyXapDFBTkoF0zanK0vsTvstUFlIO5cOkDMj91odJaKRctPWbUg%3D%3D" for 172.21.0.1 at 2020-06-28 08:43:45 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"johnson", "password"=>"[FILTERED]", "authenticity_token"=>"+8wbOQL2bqhswcyQvElZNVBQqNiP1gdtfRyFyXapDFBTkoF0zanK0vsTvstUFlIO5cOkDMj91odJaKRctPWbUg=="}
+  [1m[36mRoomchat Load (5.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (5.4ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 24ms (Views: 0.2ms | ActiveRecord: 14.3ms | Allocations: 2489)
+
+
+  [1m[36mRoomchat Load (1.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (3.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (3.4ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:43:45.495605"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (2.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:43:48 +0000
+Started GET "/personal/muted?speudo=carl" for 172.21.0.1 at 2020-06-28 08:43:48 +0000
+  [1m[36mUser Load (8.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (8.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+Processing by PersonnalController#muted as */*
+  Parameters: {"speudo"=>"carl"}
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Processing by RoomchatController#index as JSON
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+  [1m[36mRoomchat Load (3.9ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  [1m[36mMute Load (2.0ms)[0m  [1m[34mSELECT "mutes".* FROM "mutes" WHERE "mutes"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/personnal_controller.rb:13:in `muted'
+Completed 200 OK in 14ms (Views: 0.1ms | ActiveRecord: 2.4ms | Allocations: 3349)
+
+
+  [1m[36mUser Exists? (6.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Completed 200 OK in 8ms (Views: 3.5ms | ActiveRecord: 3.9ms | Allocations: 1896)
+
+
+  [1m[36mUser Update (3.4ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:43:48.269944"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mRoomchat Load (1.9ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[36mRoomchat Update (1.3ms)[0m  [1m[33mUPDATE "roomchats" SET "owner" = $1, "updated_at" = $2 WHERE "roomchats"."id" = $3[0m  [["owner", "johnson"], ["updated_at", "2020-06-28 08:43:48.297038"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:27:in `unsubscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mAdmin Create (3.1ms)[0m  [1m[32mINSERT INTO "admins" ("speudo", "roomchat_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["speudo", "johnson"], ["roomchat_id", 1], ["created_at", "2020-06-28 08:43:48.309117"], ["updated_at", "2020-06-28 08:43:48.309117"]]
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:28:in `unsubscribed'
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started GET "/roomchat/join?roomname=funRoom&speudo=carl&password=&authenticity_token=xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O%2Fxm2SdTRTpnvVQ%3D%3D" for 172.21.0.1 at 2020-06-28 08:43:49 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#join as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "password"=>"[FILTERED]", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (2.1ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mBanlist Load (2.2ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/roomchat_controller.rb:29:in `join'
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:33:in `join'
+Completed 200 OK in 17ms (Views: 0.2ms | ActiveRecord: 7.8ms | Allocations: 2511)
+
+
+  [1m[36mRoomchat Load (1.8ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:4:in `subscribed'
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:5:in `subscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Exists? (3.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Update (3.7ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", 1], ["updated_at", "2020-06-28 08:43:49.382849"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:8:in `subscribed'
+  [1m[36mUser Load (3.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Started POST "/message/chatroom" for 172.21.0.1 at 2020-06-28 08:44:10 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by MessageController#chatroom as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"carl", "anagram"=>"", "content"=>"hello , how are you doing ?", "authenticity_token"=>"xixCjPEeoho66KbqhhykGPyyf077dfn1wB19NincpsY0FW25rjRNjn7s5mQLG4GtdheV547O/xm2SdTRTpnvVQ=="}
+  [1m[36mRoomchat Load (1.9ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/message_controller.rb:3:in `chatroom'
+  [1m[36mBanlist Load (1.9ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/message_controller.rb:7:in `chatroom'
+No template found for MessageController#chatroom, rendering head :no_content
+Completed 204 No Content in 13ms (ActiveRecord: 3.8ms | Allocations: 2152)
+
+
+Started POST "/message/chatroom" for 172.21.0.1 at 2020-06-28 08:44:15 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by MessageController#chatroom as */*
+  Parameters: {"roomname"=>"funRoom", "speudo"=>"johnson", "anagram"=>"", "content"=>"fine and you ?", "authenticity_token"=>"+8wbOQL2bqhswcyQvElZNVBQqNiP1gdtfRyFyXapDFBTkoF0zanK0vsTvstUFlIO5cOkDMj91odJaKRctPWbUg=="}
+  [1m[36mRoomchat Load (1.1ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/controllers/message_controller.rb:3:in `chatroom'
+  [1m[36mBanlist Load (2.1ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/controllers/message_controller.rb:7:in `chatroom'
+No template found for MessageController#chatroom, rendering head :no_content
+Completed 204 No Content in 15ms (ActiveRecord: 3.2ms | Allocations: 2104)
+
+
+Started POST "/roomchat/game" for 172.21.0.1 at 2020-06-28 08:44:22 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#game as */*
+  Parameters: {"roomname"=>"funRoom", "player"=>"johnson", "enemy"=>"carl", "authenticity_token"=>"+8wbOQL2bqhswcyQvElZNVBQqNiP1gdtfRyFyXapDFBTkoF0zanK0vsTvstUFlIO5cOkDMj91odJaKRctPWbUg=="}
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."status" = $1 AND "users"."username" = $2 LIMIT $3[0m  [["status", "online"], ["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:160:in `game'
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."status" = $1 AND "users"."username" = $2 LIMIT $3[0m  [["status", "online"], ["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:161:in `game'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/controllers/roomchat_controller.rb:162:in `game'
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/matchmaking.rb:7:in `make'
+  [1m[36mUser Exists? (3.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/models/matchmaking.rb:7:in `make'
+  [1m[36mUser Exists? (3.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/models/matchmaking.rb:7:in `make'
+  [1m[36mUser Update (3.0ms)[0m  [1m[33mUPDATE "users" SET "match" = $1, "status" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["match", "duel"], ["status", "in a match with 0"], ["updated_at", "2020-06-28 08:44:22.640733"], ["id", 3]]
+  ↳ app/models/matchmaking.rb:7:in `make'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/matchmaking.rb:7:in `make'
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/matchmaking.rb:9:in `make'
+  [1m[36mUser Exists? (2.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/models/matchmaking.rb:9:in `make'
+  [1m[36mUser Exists? (2.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/models/matchmaking.rb:9:in `make'
+  [1m[36mUser Update (3.0ms)[0m  [1m[33mUPDATE "users" SET "match" = $1, "status" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["match", "duel"], ["status", "in a match with 1"], ["updated_at", "2020-06-28 08:44:22.662934"], ["id", 1]]
+  ↳ app/models/matchmaking.rb:9:in `make'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/matchmaking.rb:9:in `make'
+Completed 200 OK in 101ms (Views: 0.1ms | ActiveRecord: 28.3ms | Allocations: 13003)
+
+
+  [1m[36mUser Load (2.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "carl"], ["LIMIT", 1]]
+  [1m[35m (1.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (10.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:44:27 +0000
+  [1m[36mUser Exists? (7.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Exists? (7.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (9.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Update (7.4ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:44:27.700380"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[35m (4.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Update (13.3ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:44:27.705941"], ["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"players"}
+  [1m[36mRoomchat Load (3.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[35m (1.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (4.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+  [1m[36mUser Load (8.4ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "0"], ["status", "in a match with 0"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 28ms (Views: 12.5ms | ActiveRecord: 9.1ms | Allocations: 5468)
+
+
+  [1m[36mRoomchat Load (2.2ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:44:27 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mUser Load (4.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:82:in `preparelistuser'
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"players"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (2.8ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "0"], ["status", "in a match with 0"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 9ms (Views: 2.6ms | ActiveRecord: 3.2ms | Allocations: 1971)
+
+
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  [1m[35m (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (2.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[35m (0.9ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (9.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (11.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (6.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Exists? (13.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  [1m[36mUser Update (10.7ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:44:30.737525"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:44:30 +0000
+  [1m[35m (4.2ms)[0m  [1m[35mCOMMIT[0m
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Update (9.9ms)[0m  [1m[33mUPDATE "users" SET "roomchat_id" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["roomchat_id", nil], ["updated_at", "2020-06-28 08:44:30.758703"], ["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mRoomchat Load (2.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[35m (1.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mRoomchat Load (15.0ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+  [1m[36mUser Load (19.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+Processing by UsersController#index as JSON
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  Parameters: {"id"=>"players"}
+  [1m[36mUser Load (4.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "johnson"], ["LIMIT", 1]]
+  [1m[36mUser Load (6.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:19:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mUser Load (5.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mBanlist Load (2.1ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mUser Load (6.3ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "1"], ["status", "in a match with 1"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 29ms (Views: 5.6ms | ActiveRecord: 11.4ms | Allocations: 5932)
+
+
+  [1m[36mAdmin Load (7.4ms)[0m  [1m[34mSELECT "admins".* FROM "admins" WHERE "admins"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mUser Exists? (4.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:44:30 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mBanlist Load (3.6ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mAdmin Destroy (2.3ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mUser Exists? (3.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  [1m[36mAdmin Destroy (5.3ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 2]]
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"players"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mAdmin Load (6.4ms)[0m  [1m[34mSELECT "admins".* FROM "admins" WHERE "admins"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:21:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mUser Load (5.3ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "1"], ["status", "in a match with 1"]]
+  [1m[36mAdmin Destroy (3.3ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/controllers/users_controller.rb:60:in `index'
+  [1m[36mRoomchat Load (2.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE "roomchats"."roomname" = $1 LIMIT $2[0m  [["roomname", "funRoom"], ["LIMIT", 1]]
+Completed 200 OK in 16ms (Views: 7.4ms | ActiveRecord: 5.7ms | Allocations: 4168)
+
+
+  ↳ app/channels/roomchat_channel.rb:22:in `unsubscribed'
+  [1m[36mAdmin Destroy (3.1ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 4]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mUser Load (4.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."roomchat_id" = $1 ORDER BY updated_at[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:25:in `unsubscribed'
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:44:30 +0000
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (3.1ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 5]]
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (2.5ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 6]]
+  [1m[36mBanlist Load (6.1ms)[0m  [1m[34mSELECT "banlists".* FROM "banlists" WHERE "banlists"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"players"}
+  [1m[36mAdmin Destroy (2.4ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 7]]
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Load (2.7ms)[0m  [1m[34mSELECT "admins".* FROM "admins" WHERE "admins"."roomchat_id" = $1[0m  [["roomchat_id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (4.2ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 8]]
+  [1m[36mUser Load (6.4ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "1"], ["status", "in a match with 1"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 18ms (Views: 5.1ms | ActiveRecord: 7.0ms | Allocations: 4492)
+
+
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mRoomchat Destroy (1.6ms)[0m  [1m[31mDELETE FROM "roomchats" WHERE "roomchats"."id" = $1[0m  [["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (13.5ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 1]]
+  [1m[36mAdmin Destroy (65.7ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 1]]
+  [1m[35m (2.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mRoomchat Load (2.2ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE (id > 1)[0m
+  [1m[36mAdmin Destroy (2.6ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 2]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:70:in `sendlistroom'
+  [1m[36mAdmin Destroy (2.2ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 2]]
+  [1m[36mAdmin Destroy (1.5ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:44:30 +0000
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (3.0ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 4]]
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:44:30 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mAdmin Destroy (2.9ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 3]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (3.5ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 5]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (2.3ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 4]]
+Processing by RoomchatController#index as JSON
+  [1m[36mAdmin Destroy (2.5ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 6]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mRoomchat Load (2.7ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (1.8ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 7]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+Completed 200 OK in 6ms (Views: 2.7ms | ActiveRecord: 2.7ms | Allocations: 1866)
+
+
+Processing by RoomchatController#index as JSON
+  [1m[36mAdmin Destroy (2.4ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 5]]
+  [1m[36mAdmin Destroy (2.9ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 8]]
+  [1m[36mRoomchat Load (2.0ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  [1m[36mRoomchat Destroy (1.5ms)[0m  [1m[31mDELETE FROM "roomchats" WHERE "roomchats"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 9ms (Views: 6.1ms | ActiveRecord: 2.0ms | Allocations: 2782)
+
+
+  [1m[36mAdmin Destroy (2.4ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 6]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mAdmin Destroy (3.8ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 7]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[36mRoomchat Load (2.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE (id > 1)[0m
+  ↳ app/channels/roomchat_channel.rb:70:in `sendlistroom'
+  [1m[36mAdmin Destroy (2.9ms)[0m  [1m[31mDELETE FROM "admins" WHERE "admins"."id" = $1[0m  [["id", 8]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:44:31 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:44:31 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mRoomchat Destroy (5.8ms)[0m  [1m[31mDELETE FROM "roomchats" WHERE "roomchats"."id" = $1[0m  [["id", 1]]
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+Processing by RoomchatController#index as JSON
+  ↳ app/channels/roomchat_channel.rb:32:in `unsubscribed'
+Processing by RoomchatController#index as JSON
+  [1m[36mRoomchat Load (1.7ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  [1m[36mRoomchat Load (2.1ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats" WHERE (id > 1)[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  ↳ app/channels/roomchat_channel.rb:70:in `sendlistroom'
+  [1m[36mRoomchat Load (1.6ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 10ms (Views: 7.0ms | ActiveRecord: 1.6ms | Allocations: 2725)
+
+
+Completed 200 OK in 8ms (Views: 5.2ms | ActiveRecord: 1.7ms | Allocations: 1916)
+
+
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:44:31 +0000
+Started GET "/roomchat/index" for 172.21.0.1 at 2020-06-28 08:44:31 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RoomchatController#index as JSON
+Processing by RoomchatController#index as JSON
+  [1m[36mRoomchat Load (2.2ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+  [1m[36mRoomchat Load (2.5ms)[0m  [1m[34mSELECT "roomchats".* FROM "roomchats"[0m
+Completed 200 OK in 6ms (Views: 3.1ms | ActiveRecord: 2.2ms | Allocations: 1396)
+
+
+  ↳ app/controllers/roomchat_controller.rb:8:in `index'
+Completed 200 OK in 8ms (Views: 4.8ms | ActiveRecord: 2.5ms | Allocations: 2127)
+
+
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Exists? (5.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Exists? (8.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Update (8.9ms)[0m  [1m[33mUPDATE "users" SET "status" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["status", "offline"], ["updated_at", "2020-06-28 08:44:48.326244"], ["id", 3]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[35m (1.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Load (5.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "1"], ["LIMIT", 1]]
+  ↳ app/channels/pong_channel.rb:12:in `start'
+  [1m[36mUser Load (4.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "0"], ["LIMIT", 1]]
+  ↳ app/channels/pong_channel.rb:13:in `start'
+  [1m[36mUser Load (5.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "1"], ["LIMIT", 1]]
+  ↳ app/channels/pong_channel.rb:68:in `reset'
+  [1m[36mUser Load (3.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."userid" = $1 LIMIT $2[0m  [["userid", "0"], ["LIMIT", 1]]
+  ↳ app/channels/pong_channel.rb:69:in `reset'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/models/pong.rb:32:in `pong_score_save'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/models/pong.rb:33:in `pong_score_save'
+  [1m[36mGuildwar Load (9.0ms)[0m  [1m[34mSELECT "guildwars".* FROM "guildwars" WHERE "guildwars"."guild_1_id" IS NULL AND "guildwars"."finish" = $1 LIMIT $2[0m  [["finish", false], ["LIMIT", 1]]
+  ↳ app/models/warmatch.rb:24:in `find_war'
+  [1m[36mGuildwar Load (1.9ms)[0m  [1m[34mSELECT "guildwars".* FROM "guildwars" WHERE "guildwars"."guild_2_id" IS NULL AND "guildwars"."finish" = $1 LIMIT $2[0m  [["finish", false], ["LIMIT", 1]]
+  ↳ app/models/warmatch.rb:26:in `find_war'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/pong.rb:45:in `pong_score_save'
+  [1m[36mMatch Create (6.7ms)[0m  [1m[32mINSERT INTO "matches" ("playerLeft", "playerRight", "scoreLeft", "scoreRight", "matchType", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["playerLeft", "1"], ["playerRight", "0"], ["scoreLeft", 2], ["scoreRight", 5], ["matchType", "duel"], ["created_at", "2020-06-28 08:45:18.655186"], ["updated_at", "2020-06-28 08:45:18.655186"]]
+  ↳ app/models/pong.rb:45:in `pong_score_save'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/pong.rb:45:in `pong_score_save'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/pong.rb:45:in `pong_score_save'
+  [1m[36mMatch Update (3.7ms)[0m  [1m[33mUPDATE "matches" SET "user_id" = $1, "updated_at" = $2 WHERE "matches"."id" = $3[0m  [["user_id", 3], ["updated_at", "2020-06-28 08:45:18.670040"], ["id", 1]]
+  ↳ app/models/pong.rb:45:in `pong_score_save'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/pong.rb:45:in `pong_score_save'
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/pong.rb:52:in `pong_score_save'
+  [1m[36mMatch Create (0.5ms)[0m  [1m[32mINSERT INTO "matches" ("playerLeft", "playerRight", "scoreLeft", "scoreRight", "matchType", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["playerLeft", "1"], ["playerRight", "0"], ["scoreLeft", 2], ["scoreRight", 5], ["matchType", "duel"], ["created_at", "2020-06-28 08:45:18.681790"], ["updated_at", "2020-06-28 08:45:18.681790"]]
+  ↳ app/models/pong.rb:52:in `pong_score_save'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/pong.rb:52:in `pong_score_save'
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/pong.rb:52:in `pong_score_save'
+  [1m[36mMatch Update (6.1ms)[0m  [1m[33mUPDATE "matches" SET "user_id" = $1, "updated_at" = $2 WHERE "matches"."id" = $3[0m  [["user_id", 1], ["updated_at", "2020-06-28 08:45:18.689467"], ["id", 2]]
+  ↳ app/models/pong.rb:52:in `pong_score_save'
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/pong.rb:52:in `pong_score_save'
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/pong.rb:67:in `pong_score_save'
+  [1m[36mUser Exists? (2.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "1"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/models/pong.rb:67:in `pong_score_save'
+  [1m[36mUser Exists? (2.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "johnson"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/models/pong.rb:67:in `pong_score_save'
+  [1m[36mUser Update (2.4ms)[0m  [1m[33mUPDATE "users" SET "match" = $1, "losses" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["match", "none"], ["losses", 1], ["updated_at", "2020-06-28 08:45:18.716525"], ["id", 3]]
+  ↳ app/models/pong.rb:67:in `pong_score_save'
+  [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/pong.rb:67:in `pong_score_save'
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/models/pong.rb:68:in `pong_score_save'
+  [1m[36mUser Exists? (4.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/models/pong.rb:68:in `pong_score_save'
+  [1m[36mUser Exists? (3.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/models/pong.rb:68:in `pong_score_save'
+  [1m[36mUser Update (3.3ms)[0m  [1m[33mUPDATE "users" SET "match" = $1, "victories" = $2, "status" = $3, "updated_at" = $4 WHERE "users"."id" = $5[0m  [["match", "none"], ["victories", 1], ["status", "online"], ["updated_at", "2020-06-28 08:45:18.743169"], ["id", 1]]
+  ↳ app/models/pong.rb:68:in `pong_score_save'
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/models/pong.rb:68:in `pong_score_save'
+Started GET "/tournament/rank/3" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/tournament/rank/5" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Started GET "/tournament/rank/1" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Started GET "/tournament/rank/4" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Started GET "/tournament/rank/2" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by TournamentController#index as JSON
+Processing by TournamentController#index as JSON
+Processing by TournamentController#index as JSON
+Processing by TournamentController#index as JSON
+  Parameters: {"id"=>"3"}
+Processing by TournamentController#index as JSON
+  Parameters: {"id"=>"1"}
+  Parameters: {"id"=>"4"}
+  Parameters: {"id"=>"5"}
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (5.4ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 4]]
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+Completed 200 OK in 11ms (Views: 4.7ms | ActiveRecord: 5.4ms | Allocations: 2108)
+
+
+  [1m[36mUser Load (4.5ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 5]]
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+Completed 200 OK in 13ms (Views: 7.5ms | ActiveRecord: 4.5ms | Allocations: 2744)
+
+
+  [1m[36mUser Load (4.8ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 3]]
+  [1m[36mUser Load (5.3ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 1]]
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+Started GET "/tournament/rank/4" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+  [1m[36mUser Load (3.8ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 2]]
+Started GET "/tournament/rank/5" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+Completed 200 OK in 25ms (Views: 20.3ms | ActiveRecord: 3.8ms | Allocations: 7088)
+
+
+Completed 200 OK in 27ms (Views: 20.5ms | ActiveRecord: 5.3ms | Allocations: 6646)
+
+
+Completed 200 OK in 32ms (Views: 26.1ms | ActiveRecord: 4.8ms | Allocations: 7782)
+
+
+Started GET "/tournament/rank/1" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Started GET "/tournament/rank/2" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/tournament/rank/3" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Processing by TournamentController#index as JSON
+  Parameters: {"id"=>"4"}
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by TournamentController#index as JSON
+  Parameters: {"id"=>"5"}
+  [1m[36mUser Load (11.7ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 4]]
+Processing by TournamentController#index as JSON
+  Parameters: {"id"=>"1"}
+Processing by TournamentController#index as JSON
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+  [1m[36mUser Load (6.4ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 5]]
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+  Parameters: {"id"=>"2"}
+Completed 200 OK in 23ms (Views: 10.8ms | ActiveRecord: 11.7ms | Allocations: 5889)
+
+
+Processing by TournamentController#index as JSON
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 1]]
+Completed 200 OK in 21ms (Views: 13.2ms | ActiveRecord: 6.4ms | Allocations: 6121)
+
+
+  Parameters: {"id"=>"3"}
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+  [1m[36mUser Load (4.4ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 2]]
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+Completed 200 OK in 14ms (Views: 8.0ms | ActiveRecord: 4.4ms | Allocations: 2951)
+
+
+Completed 200 OK in 19ms (Views: 14.0ms | ActiveRecord: 3.5ms | Allocations: 3529)
+
+
+  [1m[36mUser Load (4.6ms)[0m  [1m[34mSELECT "users"."username" FROM "users" WHERE "users"."rank" = $1[0m  [["rank", 3]]
+  ↳ app/controllers/tournament_controller.rb:9:in `index'
+Completed 200 OK in 11ms (Views: 5.5ms | ActiveRecord: 4.6ms | Allocations: 2594)
+
+
+Started GET "/watch" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#watch as JSON
+  [1m[36mUser Load (5.1ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE (status like 'in a match%')[0m
+  ↳ app/controllers/users_controller.rb:41:in `watch'
+Completed 200 OK in 11ms (Views: 3.9ms | ActiveRecord: 5.1ms | Allocations: 1108)
+
+
+Started GET "/watch" for 172.21.0.1 at 2020-06-28 08:45:19 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#watch as JSON
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE (status like 'in a match%')[0m
+  ↳ app/controllers/users_controller.rb:41:in `watch'
+Completed 200 OK in 5ms (Views: 2.1ms | ActiveRecord: 2.4ms | Allocations: 1107)
+
+
+Started GET "/watch" for 172.21.0.1 at 2020-06-28 08:45:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:45:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"players"}
+Processing by UsersController#watch as JSON
+  [1m[36mUser Load (7.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (9.0ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE (status like 'in a match%')[0m
+  ↳ app/controllers/users_controller.rb:41:in `watch'
+Completed 200 OK in 16ms (Views: 5.3ms | ActiveRecord: 9.0ms | Allocations: 1860)
+
+
+  [1m[36mUser Load (7.1ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "0"], ["status", "in a match with 0"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 24ms (Views: 5.5ms | ActiveRecord: 14.0ms | Allocations: 3345)
+
+
+Started GET "/user/players" for 172.21.0.1 at 2020-06-28 08:45:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"players"}
+  [1m[36mUser Load (2.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (2.8ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" WHERE ("users"."userid" = $1 OR "users"."status" = $2)[0m  [["userid", "0"], ["status", "in a match with 0"]]
+  ↳ app/controllers/users_controller.rb:60:in `index'
+Completed 200 OK in 12ms (Views: 2.8ms | ActiveRecord: 5.6ms | Allocations: 1872)
+
+
+Started GET "/guilds" for 172.21.0.1 at 2020-06-28 08:45:20 +0000
+Started GET "/guild" for 172.21.0.1 at 2020-06-28 08:45:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by GuildsController#index as JSON
+Processing by GuildsController#show as JSON
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 344)
+
+
+Started GET "/guild" for 172.21.0.1 at 2020-06-28 08:45:20 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mGuild Load (11.7ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds"[0m
+Started GET "/officer?id=" for 172.21.0.1 at 2020-06-28 08:45:21 +0000
+  ↳ app/controllers/guilds_controller.rb:5:in `index'
+Started GET "/guildwars/war?guildname=" for 172.21.0.1 at 2020-06-28 08:45:21 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by GuildsController#show as JSON
+Processing by GuildsController#showOfficer as JSON
+  Parameters: {"id"=>""}
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 344)
+
+
+Completed 200 OK in 49ms (Views: 9.1ms | ActiveRecord: 38.2ms | Allocations: 10577)
+
+
+Processing by GuildwarsController#show as JSON
+  [1m[36mGuild Load (28.2ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+  ↳ app/controllers/guilds_controller.rb:36:in `showOfficer'
+  Parameters: {"guildname"=>""}
+Started GET "/guilds" for 172.21.0.1 at 2020-06-28 08:45:21 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+No template found for GuildsController#showOfficer, rendering head :no_content
+Completed 204 No Content in 59ms (ActiveRecord: 28.2ms | Allocations: 8855)
+
+
+  [1m[36mGuild Load (12.7ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."guildname" = $1 LIMIT $2[0m  [["guildname", ""], ["LIMIT", 1]]
+Started GET "/officer?id=" for 172.21.0.1 at 2020-06-28 08:45:21 +0000
+Processing by GuildsController#index as JSON
+  ↳ app/controllers/guildwars_controller.rb:46:in `show'
+Completed 200 OK in 24ms (Views: 0.2ms | ActiveRecord: 12.7ms | Allocations: 6244)
+
+
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+  [1m[36mGuild Load (3.6ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds"[0m
+  ↳ app/controllers/guilds_controller.rb:5:in `index'
+Completed 200 OK in 9ms (Views: 4.5ms | ActiveRecord: 3.6ms | Allocations: 1573)
+
+
+Started GET "/guildwars/war?guildname=" for 172.21.0.1 at 2020-06-28 08:45:21 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by GuildsController#showOfficer as JSON
+  Parameters: {"id"=>""}
+Processing by GuildwarsController#show as JSON
+  [1m[36mGuild Load (2.3ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+  Parameters: {"guildname"=>""}
+  ↳ app/controllers/guilds_controller.rb:36:in `showOfficer'
+No template found for GuildsController#showOfficer, rendering head :no_content
+Completed 204 No Content in 10ms (ActiveRecord: 2.3ms | Allocations: 2485)
+
+
+  [1m[36mGuild Load (4.6ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."guildname" = $1 LIMIT $2[0m  [["guildname", ""], ["LIMIT", 1]]
+  ↳ app/controllers/guildwars_controller.rb:46:in `show'
+Completed 200 OK in 9ms (Views: 0.2ms | ActiveRecord: 4.6ms | Allocations: 1351)
+
+
+Started GET "/guild" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/guilds" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by GuildsController#show as JSON
+Processing by GuildsController#index as JSON
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 347)
+
+
+  [1m[36mGuild Load (4.3ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds"[0m
+  ↳ app/controllers/guilds_controller.rb:5:in `index'
+Completed 200 OK in 12ms (Views: 5.9ms | ActiveRecord: 4.3ms | Allocations: 1990)
+
+
+Started GET "/guild" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+Started GET "/guildwars/war?guildname=" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+Started GET "/officer?id=" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/guilds" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by GuildsController#showOfficer as JSON
+  Parameters: {"id"=>""}
+Processing by GuildsController#show as JSON
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms | Allocations: 344)
+
+
+Processing by GuildwarsController#show as JSON
+  Parameters: {"guildname"=>""}
+  [1m[36mGuild Load (3.1ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+Processing by GuildsController#index as JSON
+  ↳ app/controllers/guilds_controller.rb:36:in `showOfficer'
+No template found for GuildsController#showOfficer, rendering head :no_content
+Completed 204 No Content in 13ms (ActiveRecord: 3.1ms | Allocations: 2355)
+
+
+  [1m[36mGuild Load (3.1ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."guildname" = $1 LIMIT $2[0m  [["guildname", ""], ["LIMIT", 1]]
+  ↳ app/controllers/guildwars_controller.rb:46:in `show'
+Completed 200 OK in 14ms (Views: 0.4ms | ActiveRecord: 3.1ms | Allocations: 2657)
+
+
+  [1m[36mGuild Load (10.9ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds"[0m
+Started GET "/officer?id=" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+  ↳ app/controllers/guilds_controller.rb:5:in `index'
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Completed 200 OK in 21ms (Views: 9.2ms | ActiveRecord: 10.9ms | Allocations: 4188)
+
+
+Started GET "/guildwars/war?guildname=" for 172.21.0.1 at 2020-06-28 08:45:22 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by GuildsController#showOfficer as JSON
+Processing by GuildwarsController#show as JSON
+  Parameters: {"id"=>""}
+  Parameters: {"guildname"=>""}
+  [1m[36mGuild Load (2.2ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."guildname" = $1 LIMIT $2[0m  [["guildname", ""], ["LIMIT", 1]]
+  ↳ app/controllers/guildwars_controller.rb:46:in `show'
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 2.2ms | Allocations: 915)
+
+
+  [1m[36mGuild Load (2.5ms)[0m  [1m[34mSELECT "guilds".* FROM "guilds" WHERE "guilds"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+  ↳ app/controllers/guilds_controller.rb:36:in `showOfficer'
+No template found for GuildsController#showOfficer, rendering head :no_content
+Completed 204 No Content in 12ms (ActiveRecord: 2.5ms | Allocations: 2144)
+
+
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:45:23 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#show as JSON
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 5ms (Views: 0.6ms | ActiveRecord: 0.5ms | Allocations: 1104)
+
+
+Started GET "/user" for 172.21.0.1 at 2020-06-28 08:45:23 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:45:23 +0000
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:45:23 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#show as JSON
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:100:in `show'
+Completed 200 OK in 9ms (Views: 1.1ms | ActiveRecord: 1.8ms | Allocations: 1456)
+
+
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mMatch Load (3.6ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 21ms (Views: 4.5ms | ActiveRecord: 4.8ms | Allocations: 4278)
+
+
+  [1m[36mUser Load (6.3ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 20ms (Views: 4.6ms | ActiveRecord: 7.3ms | Allocations: 4426)
+
+
+Started GET "/user/matches" for 172.21.0.1 at 2020-06-28 08:45:24 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Started GET "/user/friends" for 172.21.0.1 at 2020-06-28 08:45:24 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"matches"}
+Processing by UsersController#index as JSON
+  Parameters: {"id"=>"friends"}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:54:in `index'
+  [1m[36mMatch Load (3.9ms)[0m  [1m[34mSELECT "matches".* FROM "matches" WHERE "matches"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:62:in `index'
+Completed 200 OK in 13ms (Views: 3.8ms | ActiveRecord: 4.7ms | Allocations: 3158)
+
+
+  [1m[36mUser Load (6.7ms)[0m  [1m[34mSELECT "users"."userid", "users"."username", "users"."status" FROM "users" INNER JOIN "friendships" ON "users"."id" = "friendships"."friend_user_id" WHERE "friendships"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/users_controller.rb:56:in `index'
+Completed 200 OK in 17ms (Views: 3.4ms | ActiveRecord: 7.1ms | Allocations: 3873)
+
+
+Started GET "/" for 172.21.0.1 at 2020-06-28 08:45:24 +0000
+Cannot render console from 172.21.0.1! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by RootController#new as HTML
+  Rendering root/new.html.erb within layouts/application
+  Rendered root/new.html.erb within layouts/application (Duration: 0.2ms | Allocations: 46)
+[Webpacker] Everything's up-to-date. Nothing to do
+Completed 200 OK in 155ms (Views: 153.8ms | ActiveRecord: 0.0ms | Allocations: 4619)
+
+
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Exists? (5.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."userid" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["userid", "0"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Exists? (8.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 AND "users"."id" != $2 LIMIT $3[0m  [["username", "carl"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[36mUser Update (6.3ms)[0m  [1m[33mUPDATE "users" SET "status" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["status", "offline"], ["updated_at", "2020-06-28 08:45:24.792442"], ["id", 1]]
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/channels/status_channel.rb:9:in `unsubscribed'

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import * as allExports from './index.js';\nimport { mixin } from './index.js'; // Add all of the Underscore functions to the wrapper object.\n\nvar _ = mixin(allExports); // Legacy Node.js API\n\n\n_._ = _; // Export the Underscore API.\n\nexport default _;","map":null,"metadata":{},"sourceType":"module"}

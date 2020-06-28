@@ -1,0 +1,26 @@
+docker-compose 3.7
+ubuntu 18.04
+ruby 2.7.0
+rails 6.0.2.2
+
+OAuth 2.0 :
+-----------
+https://aaronparecki.com/oauth-2-simplified/#authorization
+https://blog.indoorway.com/getting-started-with-oauth2-4d4701e2fd8b
+
+
+Webpacker :
+-----------
+Webpacker’s default configuration says the following:
++) app/javascript/packs/ shall contain your Javascript packs
+(for instance: application.js)
++) You can include a Javascript pack in your views using javascript_pack_tag
+'<pack_name>' (for instance: <%= javascript_pack_tag 'my_app' %>
+will include app/javascript/packs/my_app.js)
+
+Sprockets :
+-----------
+Sprockets pipeline, you would:
++) Write your CSS (for instance: app/assets/stylesheets/my_makeup.css)
++) Include it in your view using stylesheet_link_tag
+(<%= stylesheet_link_tag 'my_makeup' %>)

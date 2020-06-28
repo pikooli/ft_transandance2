@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  playerLeft: MyString
+  playerRight: MyString
+  type: 
+  scoreLeft: 1
+  scoreRight: 1
+
+two:
+  playerLeft: MyString
+  playerRight: MyString
+  type: 
+  scoreLeft: 1
+  scoreRight: 1

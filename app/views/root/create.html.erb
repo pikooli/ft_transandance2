@@ -1,0 +1,5 @@
+<%= form_with(url: {action: :index}, :local => true) do %>
+	<label>One Time Password</label>
+	<%= text_field_tag(:otp) %>
+	<%= submit_tag("submit") %>
+<% end %>

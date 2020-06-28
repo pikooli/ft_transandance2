@@ -1,0 +1,283 @@
+<div id="nav">
+	<div id='button'>
+		<input type="button" value="User">
+		<input type="button" value="Search">
+		<input type="button" value="Guild">
+		<input type="button" value="Pong">
+		<input type="button" value="Watch">
+		<input type="button" value="Tournament">
+		<input type="button" value="Deathmatch">
+		<input type="button" value="Chat">
+		<%= button_to("SIGN OUT", { :action => :new }, :method => :get) %>
+	</div>
+	<div id='welcome'>
+		<h1>Welcome</h1>
+		<h1 id='anagram'></h1>
+		<h1 id='playerUsername'></h1>
+	</div>
+	<div id='flashMessage'>
+	</div>
+</div>
+
+<!-- ------------------------------------------------ -->
+
+<div id="main">LOADING</div>
+
+<!-- ========= -->
+<!-- Templates -->
+<!-- ========= -->
+<script type="text/template" id="userTemplate">
+	<div id='usertemplate'>
+		<h2>User</h2>
+		<div id="userAvatar">
+		<% if @user.avatar.attached?() %>
+			<%= image_tag(@user.avatar, :height => "100", :width => "100") %>
+		<% else %>
+			<%= image_tag("avatar.png", :height => "100", :width => "100"); %>
+		<% end %>
+		<%= form_with(model: @user, url: "/user/update/avatar", local: true) do |form| %>
+			<%= form.file_field(:avatar, :accept => "image/png") %>
+			<%= form.submit("Submit") %>
+		<% end %>
+		</div>
+		<div id="userName">
+		<label>Username: <%%- username %></label>
+		<input class="hide" type="text">
+		</div>
+		<div id="userInfo">
+		<label>Status: <%%- status %></label>
+		<ul>
+			<li>
+				<label>Admin:</label>
+				<input id="infoAdmin" type="button" value="<%%- admin %>">
+			</li>
+			<li>
+				<label>Match:</label>
+				<input id="infoMatch" type="button" value="<%%- match %>">
+			</li>
+			<li>Victories: <%%- victories %></li>
+			<li>Losses: <%%- losses %></li>
+			<li>Ladder rank: <%%- rank %></li>
+			<li>Deathmatch won: <%%- deathmatch %></li>
+			<li>Guild: <%%- guild_id %></li>
+			<li>Created at: <%%- created_at %></li>
+			<li>Updated at: <%%- updated_at %></li>
+		</ul>
+		</div>
+		<div id="userFriends">
+			<h3>Friends</h3>
+			<ul></ul>
+			<label>Add friend: </label>
+			<input type="text">
+		</div>
+		<div id="userMatches">
+			<h3>Matches</h3>
+			<ul></ul>
+		</div>
+		<div id="userTotp">
+			<h3>Two factor authentication</h3>
+			<label class="hide"></label>
+			<input type="button" value="show">
+			<input type="button" value="TFA?">
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="searchTemplate">
+	<div id="searchBar">
+		<section>Please type the username of the player you want to see the match history, press enter to search <section/>
+		<label>Search: </label>
+		<input type="text" placeholder='username'>
+	</div>
+	<div id="searchUser" class="hide">
+		<h3></h3>
+		<input type="button" value="ban">
+		<input type="button" value="unban">
+	</div>
+	<div id="searchMatches">
+		<ul></ul>
+	</div>
+</script>
+
+<script type="text/template" id="guildTemplate">
+	<div id='Guild'>
+		<div id='GuildMenu'>
+			<button id='MyGuild'>My Guild</button>
+			<button id='CreateGuild'>Create Guild</button>
+			<button id='JoinGuild'>Join Guild</button>
+			<button id='GuildRank'>Guild Ranking</button>
+			<button id='ProposeWars'>Propose GuildWars</button>
+			<button id='GuildWars'>Guild Wars</button>
+			<button id='GuildHistory'>Guild Wars History</button>
+		</div>
+		<div id='GuildMain'>
+			<div id="guildInfo">
+			</div>
+			<div id="guildCreate">
+				<h2>Create a Guild ᕙ(⇀‸↼‶)ᕗ</h2>
+				<input id="makeGuild" type="text" placeholder='name of the guild'>
+				<input type="button" value="Create">
+			</div>
+			<div id="guildJoin">
+				<h2>Join a Guild (｡◕‿◕｡)</h2>
+				<ol></ol>
+			</div>
+			<div id="guildRanking">
+				<h2>Guild Ranking q(❂‿❂)p</h2>
+				<ol></ol>
+			</div>
+			<div id='proposeWars'>
+			</div>
+			<div id="guildWars">
+			</div>
+			<div id='guildHistory'>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="pongTemplate">
+	<div id="pongScore">
+		<span id='playerleft'></span><span id="scoreLeft"></span>
+		<br/>
+		<span id='playerright'></span><span id="scoreRight"></span>
+	</div>
+	<div class='gamepong'>
+		<svg>
+			<rect id="background"/>
+			<line id="net"/>
+			<rect id="leftPaddle"/>
+			<rect id="rightPaddle"/>
+			<rect id="ball"/>
+		</svg>
+	</div>
+	<div id="pongPlay">
+		<input type="button" value="Start">
+		<input type="button" value="Stop">
+	</div>
+	<div id="pongPlayers">
+		<h2>Active players</h2>
+		<ul></ul>
+	</div>
+</script>
+
+<script type="text/template" id="watchTemplate">
+	<div id="watchGames">
+		<h2>Games</h2>
+		<ul></ul>
+	</div>
+	<div class='gamepong'>
+		<svg>
+			<rect id="watchBackground"/>
+			<line id="watchNet"/>
+			<rect id="watchLeftPaddle"/>
+			<rect id="watchRightPaddle"/>
+			<rect id="watchBall"/>
+		</svg>
+	</div>
+</script>
+
+<script type="text/template" id="tournamentTemplate">
+	<div id='tournament'>
+		<h2>Tournament</h2>
+		<section>Click on play and battle your way to the top. when you are at the top, keep it !!!!!!!!! ᕦ(ò_óˇ)ᕤ<section/>
+		<div id="tournamentRanks">
+			<h3>Ranks</h3>
+			<label>Rank1</label>
+			<ul id="rank1"></ul>
+			<label>Rank2</label>
+			<ul id="rank2"></ul>
+			<label>Rank3</label>
+			<ul id="rank3"></ul>
+			<label>Rank4</label>
+			<ul id="rank4"></ul>
+			<label>Rank5</label>
+			<ul id="rank5"></ul>
+		</div>
+		<div id="tournamentMatch">
+			<h3>Play a match</h3>
+			<input type="button" value="Play">
+			<p></p>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="chatTemplate">
+		<h2 id='chattitle'>Chat</h2>
+		<div id='addChatPlace'>
+			<input type='text' id='NameChat' placeholder='name of the chatroom'/>
+			<input type='password' id='password' placeholder='password'/>
+			<button id='submitNameChat'>create new chat</button>
+		</div>
+		<section> chat room lobby </section>
+		<div id='chatfunction'>
+			<div id='chatroom'>
+				<ul></ul>
+			</div>
+
+			<div id='chat' style='display: none;' data-room-id=''>
+				<div id='chatnameplace'>
+					<p id='chatname'></p>
+				</div>
+				<div id='messagerie'>
+				</div>
+				<div id='newmessage'>
+					<input id='Message' type='text' />
+					<button id='submitMessage'> send message </button>
+				</div>
+			</div>
+
+			<div id='listusername'style='display: none;'>
+				<p id='listlabel'>User in the room</p>
+				<div id='list'>
+				</div>
+			</div>
+		</div>
+</script>
+
+<script type="text/template" id="deathmatchTemplate">
+	<div id='deathmatch'>
+		<h2>Deathmatch</h2>
+		<section>Deathmatch are tournament launch by admin.<section/>
+		<section>When a Deatmatch tournament is launch you have 30 sec to register.<section/>
+		<section>Battle everyone and the last man standing win everything or nothing.¯\_(ツ)_/¯<psection/>
+		<div id="deathmatchCreate">
+			<h3>Create</h3>
+			<input type="button" value="Create">
+			<p></p>
+		</div>
+		<div id="deathmatchJoin">
+		<section>Click on join to participe to the Deathmatch.<section/>
+			<input type="button" value="Join">
+			<p></p>
+		</div>
+		<div id="deathmatchPlay">
+			<h3>Play</h3>
+			<section>Click on play to challenge someone on a Deathmatch Match ヽ(´▽`)/<section/>
+			<input type="button" value="Play">
+			<p></p>
+		</div>
+		<div id="deathmatchUsers">
+			<h3>Users</h3>
+			<ul></ul>
+		</div>
+	</div>
+</script>
+
+
+<script type="text/template" id='404cat'>
+	<%= image_tag ("404.gif"), width: "50%" %>
+</script>
+
+<script type="text/template" id='404catbig'>
+	<%= image_tag ("404.gif"), width: "100%" %>
+</script>
+
+<!-- ========== -->
+<!-- Javascript -->
+<!-- ========== -->
+<%=
+	javascript_pack_tag 'overlyComplicatedHogwash',
+	'data-turbolinks-track': 'reload',
+	'data-turbolinks-suppress-warning': true
+%>
