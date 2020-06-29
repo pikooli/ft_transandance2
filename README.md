@@ -1,6 +1,6 @@
 <p align="center"><strong>FT_TRANSANDANCE</strong><p/>
 
-This is the first projet web of the common branch.
+This is the first projet web of the common branch at school 42.
 
 You have to do a website around the theme pong match, with no framework other than backbonejs and ruby on rails.
 
