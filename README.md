@@ -18,3 +18,4 @@ It have to have :
 
 
 
+<img ="chat.gif"/>
