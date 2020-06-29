@@ -16,11 +16,12 @@ It have to have :
     - Security again SQL , script injection and password encrypted.
 
 
-
-<p align="center"> Showing the real time chat
+<p align="center"> #Showing the real time chat<p/>
+<p align="center">
 <img src="chat.gif" width="700" height="350" />
 <p/>
 
-<p align="center"> Showing a game of pong
+<p align="center"> #Showing a game of pong<p/>
+<p align="center"> 
 <img src="pong.gif" width="700" height="350"/>
 <p/>
