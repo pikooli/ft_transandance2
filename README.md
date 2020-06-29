@@ -18,7 +18,7 @@ It have to have :
 
 
 
-<img src="chat.gif" width="700" height="350"/>
+<img src="chat.gif" width="700" height="350" align="center"/>
 
 
 <img src="pong.gif" width="700" height="350"/>
