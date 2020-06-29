@@ -14,7 +14,10 @@ It have to have :
     - Create a guild and administrate it.
     - Spectacle a match between two player.
     - Security again SQL , script injection and password encrypted.
+    - Have to be launch with the help of a single command "docker-compose up -build"
 
+
+You can have access to the website at localhost:3000
 
 <p align="center"> #Showing the real time chat<p/>
 <p align="center">
