@@ -1,4 +1,4 @@
---------------------------- __#FT_TRANSANDANCE__ --------------------------------
+<p align="center"><strong>FT_TRANSANDANCE</strong><p/>
 
 This is the first projet web of the common branch.
 
@@ -6,7 +6,7 @@ You have to do a website around the theme pong match, with no framework other th
 
 It have to have :
 
-    - A login interface, the login have to be with the 42 api (so only 42 account can register).
+    - A login interface, the login have to be with the 42 api (so only 42 account can log in).
     - Posibility to do 2 factor authentification (with help of google , facebook or other authentification)
     - Possibility to chat between users with room, private room or by direct message in real time.
     - Implementation of notifications if a player send you a messages or a game proposition.
