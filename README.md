@@ -19,3 +19,6 @@ It have to have :
 
 
 <img src="chat.gif" width="600" height="400"/>
+
+
+<img src="pong.gif" width="600" height="400"/>
