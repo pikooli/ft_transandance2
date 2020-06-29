@@ -17,8 +17,10 @@ It have to have :
 
 
 
+<p align="center"> Showing the real time chat
+<img src="chat.gif" width="700" height="350" />
+<p/>
 
-<img src="chat.gif" width="700" height="350" align="center"/>
-
-
+<p align="center"> Showing a game of pong
 <img src="pong.gif" width="700" height="350"/>
+<p/>
